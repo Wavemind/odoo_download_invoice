@@ -10,13 +10,7 @@ class AccountMove(models.Model):
     _inherit = ['account.move']
 
     @api.model
-    def download_pdf(self, *args, **kwargs):
-        order_display_name = f'WOO{args[0]}'
-        
-
+    def download_pdf(self, ref):
         # Find the invoices linked to the sale order by its display name
-        invoices = self.env['account.move'].search([
-            ('invoice_origin', '=', order_display_name),
-        ])
-
+        invoices = self.env['account.move'].search([('ref', '=', ref[0]),])
         return base64.b64encode(self.env['ir.actions.report']._render('account.account_invoices', invoices.ids)[0]) 
