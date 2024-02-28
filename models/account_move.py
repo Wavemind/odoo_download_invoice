@@ -15,6 +15,7 @@ class AccountMove(models.Model):
         invoices = self.env['account.move'].search([('ref', '=', ref[0])])
         return base64.b64encode(self.env['ir.actions.report']._render('account.account_invoices', invoices.ids)[0])
 
+    @api.model
     def pdf_exists(self, ref):
         invoices = self.env['account.move'].search([('ref', '=', ref[0])])
         return len(invoices.ids) > 0 
