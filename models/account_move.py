@@ -12,11 +12,11 @@ class AccountMove(models.Model):
     @api.model
     def download_pdf(self, ref):
         # Find the invoices linked to the sale order by its display name
-        invoices = self.env['account.move'].search([('ref', '=', ref[0])])
+        invoices = self.env['account.move'].search([('ref', '=', ref[0]), ('state','=', 'posted')])
         return base64.b64encode(self.env['ir.actions.report']._render('account.account_invoices', invoices.ids)[0])
 
     @api.model
     def pdf_exists(self, ref):
-        invoice = self.env['account.move'].search([('ref', '=', ref[0])])
+        invoice = self.env['account.move'].search([('ref', '=', ref[0]), ('state','=', 'posted')])
         attachment = self.env['ir.attachment'].search([('res_model', '=', 'account.move'), ('res_id', '=', invoice.id)])
         return 1 if attachment else 0
