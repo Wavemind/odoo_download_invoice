@@ -17,5 +17,6 @@ class AccountMove(models.Model):
 
     @api.model
     def pdf_exists(self, ref):
-        invoices = self.env['account.move'].search([('ref', '=', ref[0])])
-        return len(invoices.ids) > 0 
+        invoice = self.env['account.move'].search([('ref', '=', ref[0])])
+        attachment = self.env['ir.attachment'].search([('res_model', '=', 'account.move'), ('res_id', 'in', invoice.id)])
+        return 0 if attachment else 1
